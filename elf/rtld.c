@@ -2527,11 +2527,13 @@ process_envvars (enum mode *modep)
 	}
       while (*nextp != '\0');
 
+#if !HAVE_TUNABLES
       if (__access ("/etc/suid-debug", F_OK) != 0)
 	{
 	  unsetenv ("MALLOC_CHECK_");
 	  GLRO(dl_debug_mask) = 0;
 	}
+#endif
 
       if (mode != normal)
 	_exit (5);
