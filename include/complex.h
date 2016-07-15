@@ -8,6 +8,13 @@
 extern complex float __kernel_casinhf (complex float z, int adj);
 extern complex double __kernel_casinh (complex double z, int adj);
 extern complex long double __kernel_casinhl (complex long double z, int adj);
+#  if __USE_FLOAT128
+#   ifdef __CFLOAT128
+extern __CFLOAT128 __kernel_casinhf128 (__CFLOAT128 z, int adj);
+#   else
+extern _Complex _Float128 __kernel_casinhf128 (_Complex _Float128 z, int adj);
+#   endif
+#  endif
 # endif
 
 #endif

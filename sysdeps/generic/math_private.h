@@ -23,6 +23,9 @@
 #include <float.h>
 #include <get-rounding-mode.h>
 
+/* Gather machine dependent _Floatn support.  */
+#include <bits/floatn.h>
+
 /* The original fdlibm code used statements like:
 	n0 = ((*(int*)&one)>>29)^1;		* index of high word *
 	ix0 = *(n0+(int*)&x);			* high word of x *
@@ -179,6 +182,100 @@ do {								\
   sf_u.word = (i);						\
   (d) = sf_u.value;						\
 } while (0)
+#endif
+
+/* Float128 variants. */
+#if __USE_FLOAT128
+extern _Float128 __ieee754_sqrtf128 (_Float128);
+extern _Float128 __ieee754_acosf128 (_Float128);
+extern _Float128 __ieee754_acoshf128 (_Float128);
+extern _Float128 __ieee754_logf128 (_Float128);
+extern _Float128 __ieee754_atanhf128 (_Float128);
+extern _Float128 __ieee754_asinf128 (_Float128);
+extern _Float128 __ieee754_atan2f128 (_Float128,_Float128);
+extern _Float128 __ieee754_expf128 (_Float128);
+extern _Float128 __ieee754_exp2f128 (_Float128);
+extern _Float128 __ieee754_exp10f128 (_Float128);
+extern _Float128 __ieee754_coshf128 (_Float128);
+extern _Float128 __ieee754_fmodf128 (_Float128,_Float128);
+extern _Float128 __ieee754_powf128 (_Float128,_Float128);
+extern _Float128 __ieee754_lgammaf128_r (_Float128,int *);
+extern _Float128 __ieee754_gammaf128_r (_Float128,int *);
+extern _Float128 __ieee754_lgammaf128 (_Float128);
+extern _Float128 __ieee754_gammaf128 (_Float128);
+extern _Float128 __ieee754_log10f128 (_Float128);
+extern _Float128 __ieee754_log2f128 (_Float128);
+extern _Float128 __ieee754_sinhf128 (_Float128);
+extern _Float128 __ieee754_hypotf128 (_Float128,_Float128);
+extern _Float128 __ieee754_j0f128 (_Float128);
+extern _Float128 __ieee754_j1f128 (_Float128);
+extern _Float128 __ieee754_y0f128 (_Float128);
+extern _Float128 __ieee754_y1f128 (_Float128);
+extern _Float128 __ieee754_jnf128 (int,_Float128);
+extern _Float128 __ieee754_ynf128 (int,_Float128);
+extern _Float128 __ieee754_remainderf128 (_Float128,_Float128);
+extern int   __ieee754_rem_pio2f128 (_Float128,_Float128*);
+extern _Float128 __ieee754_scalbf128 (_Float128,_Float128);
+extern int   __ieee754_ilogbf128 (_Float128);
+extern _Float128 __kernel_sinf128 (_Float128,_Float128,int);
+extern _Float128 __kernel_cosf128 (_Float128,_Float128);
+extern _Float128 __kernel_tanf128 (_Float128,_Float128,int);
+extern void __kernel_sincosf128 (_Float128,_Float128,
+			      _Float128 *,_Float128 *, int);
+extern int   __kernel_rem_pio2f128 (_Float128*,_Float128*,int,int,
+				 int,const int*);
+extern int __finitef128 (_Float128);
+extern int __ilogbf128 (_Float128);
+extern int __isinff128 (_Float128);
+extern int __isnanf128 (_Float128);
+extern _Float128 __atanf128 (_Float128);
+extern _Float128 __copysignf128 (_Float128, _Float128);
+extern _Float128 __expm1f128 (_Float128);
+extern _Float128 __floorf128 (_Float128);
+extern _Float128 __frexpf128 (_Float128, int *);
+extern _Float128 __ldexpf128 (_Float128, int);
+extern _Float128 __log1pf128 (_Float128);
+extern _Float128 __nanf128 (const char *);
+extern _Float128 __rintf128 (_Float128);
+extern _Float128 __scalbnf128 (_Float128, int);
+extern _Float128 __sqrtf128 (_Float128 x);
+extern _Float128 fabsf128 (_Float128 x);
+extern void __sincosf128 (_Float128, _Float128 *, _Float128 *);
+extern _Float128 __logbf128 (_Float128 x);
+extern _Float128 __significandf128 (_Float128 x);
+extern _Float128 __x2y2m1f128 (_Float128 x, _Float128 y);
+extern _Float128 __gamma_productf128 (_Float128 x, _Float128 x_eps,
+				     int n, _Float128 *eps);
+extern _Float128 __lgamma_negf128 (_Float128 x, int *signgamp);
+extern _Float128 __lgamma_productf128 (_Float128 t, _Float128 x,
+				      _Float128 x_eps, int n);
+
+/* Fixup some builtins on compilers which support __float128 and not
+   _Float128.  */
+# if __GNUC_PREREQ (7, 0)
+#  define BUILTIN_FABSF128 __builtin_fabsf128
+#  define BUILTIN_COPYSIGNF128 __builtin_copysignf128
+# else
+#  define BUILTIN_FABSF128 __builtin_fabsq
+#  define BUILTIN_COPYSIGNF128 __builtin_copysignq
+
+
+/* __builtin_isinf_sign is broken in GCC < 7 for float128.  */
+#  include <ieee754_float128.h>
+extern inline int __isinff128(_Float128 x)
+{
+	int64_t hx,lx;
+	GET_FLOAT128_WORDS64 (hx,lx,x);
+	lx |= (hx & 0x7fffffffffffffffLL) ^ 0x7fff000000000000LL;
+	lx |= -lx;
+	return ~(lx >> 63) & (hx >> 62);
+}
+# endif
+
+extern inline _Float128 __copysignf128 (_Float128 x, _Float128 y)
+{ return BUILTIN_COPYSIGNF128 (x, y); }
+extern inline _Float128 fabsf128 (_Float128 x)
+{ return BUILTIN_FABSF128 (x); }
 #endif
 
 /* We need to guarantee an expansion of name when building
@@ -431,13 +528,24 @@ extern long double __lgamma_productl (long double t, long double x,
    })
 #endif
 
+#if __USE_FLOAT128
+# define __EXPR_FLT128(x, yes, no)				\
+  __builtin_choose_expr (__builtin_types_compatible_p		\
+			 (__typeof (x), long double), no, yes)
+#else
+# define __EXPR_FLT128(x, yes, no) no
+#endif
+
+
 #define fabs_tg(x) __MATH_TG ((x), (__typeof (x)) __builtin_fabs, (x))
+
 #define min_of_type(type) __builtin_choose_expr		\
   (__builtin_types_compatible_p (type, float),		\
    FLT_MIN,						\
    __builtin_choose_expr				\
    (__builtin_types_compatible_p (type, double),	\
-    DBL_MIN, LDBL_MIN))
+    DBL_MIN,						\
+    __EXPR_FLT128 (x, FLT128_MIN, LDBL_MIN)))
 
 /* If X (which is not a NaN) is subnormal, force an underflow
    exception.  */
