@@ -108,6 +108,11 @@ type-double-routines := branred doasin dosincos halfulp mpa mpatan2	\
 type-float-suffix := f
 type-float-routines := k_rem_pio2f
 
+# _Float128 support
+type-float128-suffix := f128
+type-float128-routines := t_sincosf128 k_sincosf128
+type-float128-yes := float128
+types += $(type-float128-$(float128-fcts))
 
 # Apply suffix to each type in arg 1
 type-foreach = $(foreach t,$(types),$(subst F,$(type-$(t)-suffix),$(1)))
@@ -387,6 +392,7 @@ endif
 CFLAGS-s_modf.c += -fsignaling-nans
 CFLAGS-s_modff.c += -fsignaling-nans
 CFLAGS-s_modfl.c += -fsignaling-nans
+CFLAGS-s_modff128.c += -fsignaling-nans
 
 # The -lieee library is actually an object file.
 # The module just defines the _LIB_VERSION_ variable.
