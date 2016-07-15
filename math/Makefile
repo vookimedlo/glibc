@@ -252,6 +252,8 @@ CFLAGS-test-double.c = $(libm-test-no-inline-cflags)
 CFLAGS-test-double-finite.c = $(libm-test-finite-cflags)
 CFLAGS-test-ldouble.c = $(libm-test-no-inline-cflags)
 CFLAGS-test-ldouble-finite.c = $(libm-test-finite-cflags)
+CFLAGS-test-float128.c = $(libm-test-no-inline-cflags)
+CFLAGS-test-float128-finite.c = $(libm-test-finite-cflags)
 CFLAGS-test-tgmath.c = -fno-builtin
 # The following testcase uses very long lines (>3 million), so it may take a
 # while to compile it. See: http://llvm.org/bugs/show_bug.cgi?id=14106 and
@@ -266,6 +268,8 @@ CPPFLAGS-test-ifloat.c = -U__LIBC_INTERNAL_MATH_INLINES \
 CPPFLAGS-test-idouble.c = -U__LIBC_INTERNAL_MATH_INLINES \
 			  $(libm-test-fast-math-cflags)
 CPPFLAGS-test-ildouble.c = -U__LIBC_INTERNAL_MATH_INLINES \
+			  $(libm-test-fast-math-cflags)
+CPPFLAGS-test-ifloat128.c = -U__LIBC_INTERNAL_MATH_INLINES \
 			  $(libm-test-fast-math-cflags)
 
 CFLAGS-test-signgam-finite.c = -ffinite-math-only

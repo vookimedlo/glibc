@@ -212,6 +212,14 @@
 # define QTYPE_STR TYPE_STR
 #endif
 
+#ifndef TEST_FLOATN
+# define TEST_FLOATN 0
+#endif
+
+#ifndef CFLOAT
+# define CFLOAT __complex__ FLOAT
+#endif
+
 /* Format specific test macros.  */
 #define TEST_COND_binary32 (MANT_DIG == 24	\
 			    && MIN_EXP == -125	\
@@ -794,11 +802,11 @@ ulp (FLOAT value)
 	/* Fall through...  */
       case FP_SUBNORMAL:
         /* The next closest subnormal value is a constant distance away.  */
-	ulp = FUNC(ldexp) (1.0, MIN_EXP - MANT_DIG);
+	ulp = FUNC(ldexp) (1, MIN_EXP - MANT_DIG);
 	break;
 
       case FP_NORMAL:
-	ulp = FUNC(ldexp) (1.0, FUNC(ilogb) (value) - MANT_DIG + 1);
+	ulp = FUNC(ldexp) (1, FUNC(ilogb) (value) - MANT_DIG + 1);
 	break;
 
       default:
@@ -936,8 +944,8 @@ check_float (const char *test_name, FLOAT computed, FLOAT expected,
 
 
 static void
-check_complex (const char *test_name, __complex__ FLOAT computed,
-	       __complex__ FLOAT expected,
+check_complex (const char *test_name, CFLOAT computed,
+	       CFLOAT expected,
 	       int exception)
 {
   FLOAT part_comp, part_exp;
@@ -7367,8 +7375,10 @@ exp10_test (void)
 static void
 pow10_test (void)
 {
+#if !TEST_FLOATN
   /* pow10 uses the same test data as exp10.  */
   ALL_RM_TEST (pow10, 0, exp10_test_data, RUN_TEST_LOOP_f_f, END);
+#endif
 }
 
 
@@ -9241,8 +9251,10 @@ lgamma_test (void)
 static void
 gamma_test (void)
 {
+#if !TEST_FLOATN
   /* gamma uses the same test data as lgamma.  */
   ALL_RM_TEST (gamma, 0, lgamma_test_data, RUN_TEST_LOOP_f_f1, END, signgam);
+#endif
 }
 
 
@@ -11017,6 +11029,7 @@ nextdown_test (void)
 }
 
 
+#if !TEST_FLOATN
 /* Note, the second argument is always typed as long double.  The j type
    argument to TEST_ indicates the literal should not be post-processed by
    gen-libm-test.pl.  */
@@ -11151,11 +11164,14 @@ static const struct test_fj_f_data nexttoward_test_data[] =
 # endif
 #endif
   };
+#endif
 
 static void
 nexttoward_test (void)
 {
+#if !TEST_FLOATN
   ALL_RM_TEST (nexttoward, 1, nexttoward_test_data, RUN_TEST_LOOP_fj_f, END);
+#endif
 }
 
 
@@ -11679,8 +11695,10 @@ remainder_test (void)
 static void
 drem_test (void)
 {
+#if !TEST_FLOATN
   /* drem uses the same test data as remainder.  */
   ALL_RM_TEST (drem, 1, remainder_test_data, RUN_TEST_LOOP_ff_f, END);
+#endif
 }
 
 
@@ -12166,6 +12184,7 @@ round_test (void)
 }
 
 
+#if !TEST_FLOATN
 static const struct test_ff_f_data scalb_test_data[] =
   {
     /* Results in this case are unspecified by POSIX, so, for an
@@ -12293,11 +12312,14 @@ static const struct test_ff_f_data scalb_test_data[] =
     TEST_ff_f (scalb, 0.8L, 4, 12.8L, NO_INEXACT_EXCEPTION|ERRNO_UNCHANGED),
     TEST_ff_f (scalb, -0.854375L, 5, -27.34L, NO_INEXACT_EXCEPTION|ERRNO_UNCHANGED),
   };
+#endif
 
 static void
 scalb_test (void)
 {
+#if !TEST_FLOATN
   ALL_RM_TEST (scalb, 1, scalb_test_data, RUN_TEST_LOOP_ff_f, END);
+#endif
 }
 
 
@@ -13662,6 +13684,7 @@ yn_test (void)
 }
 
 
+#if !TEST_FLOATN
 static const struct test_f_f_data significand_test_data[] =
   {
     /* significand returns the mantissa of the exponential
@@ -13690,11 +13713,14 @@ static const struct test_f_f_data significand_test_data[] =
     TEST_f_f (significand, 8.0, 1.0, NO_INEXACT_EXCEPTION|ERRNO_UNCHANGED),
     TEST_f_f (significand, -8.0, -1.0, NO_INEXACT_EXCEPTION|ERRNO_UNCHANGED),
   };
+#endif
 
 static void
 significand_test (void)
 {
+#if !TEST_FLOATN
   ALL_RM_TEST (significand, 1, significand_test_data, RUN_TEST_LOOP_f_f, END);
+#endif
 }
 
 
@@ -13788,17 +13814,17 @@ check_ulp (void)
    FLOAT ulps, ulpx, value;
    int i;
    /* Check ulp of zero is a subnormal value...  */
-   ulps = ulp (0x0.0p0);
+   ulps = ulp (0);
    if (fpclassify (ulps) != FP_SUBNORMAL)
      {
        fprintf (stderr, "ulp (0x0.0p0) is not FP_SUBNORMAL!\n");
        exit (EXIT_FAILURE);
      }
    /* Check that the ulp of one is a normal value... */
-   ulps = ulp (1.0L);
+   ulps = ulp (1);
    if (fpclassify (ulps) != FP_NORMAL)
      {
-       fprintf (stderr, "ulp (1.0L) is not FP_NORMAL\n");
+       fprintf (stderr, "ulp (1.0) is not FP_NORMAL\n");
        exit (EXIT_FAILURE);
      }
 
@@ -13806,8 +13832,8 @@ check_ulp (void)
       We allow +/- 1 ulp around the represented value.  */
    value = FUNC(nextafter) (0, 1);
    ulps = ULPDIFF (value, 0);
-   ulpx = ulp (1.0L);
-   if (ulps < (1.0L - ulpx) || ulps > (1.0L + ulpx))
+   ulpx = ulp (1);
+   if (ulps < (1 - ulpx) || ulps > (1 + ulpx))
      {
        fprintf (stderr, "Value outside of 1 +/- 1ulp.\n");
        exit (EXIT_FAILURE);
@@ -13817,8 +13843,8 @@ check_ulp (void)
       We allow +/- 1 ulp around the represented value.  */
    value = FUNC(nextafter) (10, 20);
    ulps = ULPDIFF (value, 10);
-   ulpx = ulp (1.0L);
-   if (ulps < (1.0L - ulpx) || ulps > (1.0L + ulpx))
+   ulpx = ulp (1);
+   if (ulps < (1 - ulpx) || ulps > (1 + ulpx))
      {
        fprintf (stderr, "Value outside of 1 +/- 1ulp.\n");
        exit (EXIT_FAILURE);
@@ -13826,8 +13852,8 @@ check_ulp (void)
    /* This gives one more ulp.  */
    value = FUNC(nextafter) (value, 20);
    ulps = ULPDIFF (value, 10);
-   ulpx = ulp (2.0L);
-   if (ulps < (2.0L - ulpx) || ulps > (2.0L + ulpx))
+   ulpx = ulp (2);
+   if (ulps < (2 - ulpx) || ulps > (2 + ulpx))
      {
        fprintf (stderr, "Value outside of 2 +/- 1ulp.\n");
        exit (EXIT_FAILURE);
@@ -13836,8 +13862,8 @@ check_ulp (void)
    for (i = 2; i < 100; i++)
      value = FUNC(nextafter) (value, 20);
    ulps = ULPDIFF (value, 10);
-   ulpx = ulp (100.0L);
-   if (ulps < (100.0L - ulpx) || ulps > (100.0L + ulpx))
+   ulpx = ulp (100);
+   if (ulps < (100 - ulpx) || ulps > (100 + ulpx))
      {
        fprintf (stderr, "Value outside of 100 +/- 1ulp.\n");
        exit (EXIT_FAILURE);
