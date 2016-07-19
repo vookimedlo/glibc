@@ -32,6 +32,9 @@ extern long double __REDIRECT_NTH (acosl, (long double), __acosl_finite);
 #  endif
 # endif
 #endif
+#if __USE_FLOAT128
+extern _Float128 __REDIRECT_NTH (acosf128, (_Float128), __acosf128_finite);
+#endif
 
 #if defined __USE_XOPEN_EXTENDED || defined __USE_ISOC99
 /* acosh.  */
@@ -47,6 +50,9 @@ extern long double __REDIRECT_NTH (acoshl, (long double), __acoshl_finite);
 #  endif
 # endif
 #endif
+#if __USE_FLOAT128
+extern _Float128 __REDIRECT_NTH (acoshf128, (_Float128), __acoshf128_finite);
+#endif
 
 /* asin.  */
 extern double __REDIRECT_NTH (asin, (double), __asin_finite);
@@ -59,6 +65,9 @@ extern long double __REDIRECT_NTH (asinl, (long double), __asin_finite);
 extern long double __REDIRECT_NTH (asinl, (long double), __asinl_finite);
 #  endif
 # endif
+#endif
+#if __USE_FLOAT128
+extern _Float128 __REDIRECT_NTH (asinf128, (_Float128), __asinf128_finite);
 #endif
 
 /* atan2.  */
@@ -75,6 +84,10 @@ extern long double __REDIRECT_NTH (atan2l, (long double, long double),
 #  endif
 # endif
 #endif
+#if __USE_FLOAT128
+extern _Float128 __REDIRECT_NTH (atan2f128, (_Float128, _Float128),
+				 __atan2f128_finite);
+#endif
 
 #if defined __USE_XOPEN_EXTENDED || defined __USE_ISOC99
 /* atanh.  */
@@ -90,6 +103,9 @@ extern long double __REDIRECT_NTH (atanhl, (long double), __atanhl_finite);
 #  endif
 # endif
 #endif
+#if __USE_FLOAT128
+extern _Float128 __REDIRECT_NTH (atanhf128, (_Float128), __atanhf128_finite);
+#endif
 
 /* cosh.  */
 extern double __REDIRECT_NTH (cosh, (double), __cosh_finite);
@@ -102,6 +118,9 @@ extern long double __REDIRECT_NTH (coshl, (long double), __cosh_finite);
 extern long double __REDIRECT_NTH (coshl, (long double), __coshl_finite);
 #  endif
 # endif
+#endif
+#if __USE_FLOAT128
+extern _Float128 __REDIRECT_NTH (coshf128, (_Float128), __coshf128_finite);
 #endif
 
 /* exp.  */
@@ -116,6 +135,9 @@ extern long double __REDIRECT_NTH (expl, (long double), __expl_finite);
 #  endif
 # endif
 #endif
+#if __USE_FLOAT128
+extern _Float128 __REDIRECT_NTH (expf128, (_Float128), __expf128_finite);
+#endif
 
 #ifdef __USE_GNU
 /* exp10.  */
@@ -127,6 +149,9 @@ extern long double __REDIRECT_NTH (exp10l, (long double), __exp10_finite);
 #  else
 extern long double __REDIRECT_NTH (exp10l, (long double), __exp10l_finite);
 #  endif
+# endif
+# if __USE_FLOAT128
+extern _Float128 __REDIRECT_NTH (exp10f128, (_Float128), __exp10f128_finite);
 # endif
 
 /* pow10.  */
@@ -153,6 +178,9 @@ extern long double __REDIRECT_NTH (exp2l, (long double), __exp2l_finite);
 #  endif
 # endif
 #endif
+# if __USE_FLOAT128
+extern _Float128 __REDIRECT_NTH (exp2f128, (_Float128), __exp2f128_finite);
+# endif
 
 /* fmod.  */
 extern double __REDIRECT_NTH (fmod, (double, double), __fmod_finite);
@@ -168,6 +196,10 @@ extern long double __REDIRECT_NTH (fmodl, (long double, long double),
 #  endif
 # endif
 #endif
+# if __USE_FLOAT128
+extern _Float128 __REDIRECT_NTH (fmodf128, (_Float128, _Float128),
+				 __fmodf128_finite);
+# endif
 
 #if defined __USE_XOPEN || defined __USE_ISOC99
 /* hypot.  */
@@ -185,6 +217,10 @@ extern long double __REDIRECT_NTH (hypotl, (long double, long double),
 #  endif
 # endif
 #endif
+#if __USE_FLOAT128
+extern _Float128 __REDIRECT_NTH (hypotf128, (_Float128, _Float128),
+				   __hypotf128_finite);
+#endif
 
 #if defined __USE_MISC || defined __USE_XOPEN
 /* j0.  */
@@ -198,6 +234,9 @@ extern long double __REDIRECT_NTH (j0l, (long double), __j0_finite);
 #  else
 extern long double __REDIRECT_NTH (j0l, (long double), __j0l_finite);
 #  endif
+# endif
+# if __USE_FLOAT128
+extern _Float128 __REDIRECT_NTH (j0f128, (_Float128), __j0f128_finite);
 # endif
 #endif
 
@@ -214,6 +253,9 @@ extern long double __REDIRECT_NTH (y0l, (long double), __y0_finite);
 extern long double __REDIRECT_NTH (y0l, (long double), __y0l_finite);
 #  endif
 # endif
+# if __USE_FLOAT128
+extern _Float128 __REDIRECT_NTH (y0f128, (_Float128), __y0f128_finite);
+# endif
 #endif
 
 #if defined __USE_MISC || defined __USE_XOPEN
@@ -228,6 +270,9 @@ extern long double __REDIRECT_NTH (j1l, (long double), __j1_finite);
 #  else
 extern long double __REDIRECT_NTH (j1l, (long double), __j1l_finite);
 #  endif
+# endif
+# if __USE_FLOAT128
+extern _Float128 __REDIRECT_NTH (j1f128, (_Float128), __j1f128_finite);
 # endif
 #endif
 
@@ -244,6 +289,9 @@ extern long double __REDIRECT_NTH (y1l, (long double), __y1_finite);
 extern long double __REDIRECT_NTH (y1l, (long double), __y1l_finite);
 #  endif
 # endif
+# if __USE_FLOAT128
+extern _Float128 __REDIRECT_NTH (y1f128, (_Float128), __y1f128_finite);
+# endif
 #endif
 
 #if defined __USE_MISC || defined __USE_XOPEN
@@ -259,6 +307,9 @@ extern long double __REDIRECT_NTH (jnl, (int, long double), __jn_finite);
 extern long double __REDIRECT_NTH (jnl, (int, long double), __jnl_finite);
 #  endif
 # endif
+# if __USE_FLOAT128
+extern _Float128 __REDIRECT_NTH (jnf128, (int, _Float128), __jnf128_finite);
+# endif
 #endif
 
 #if defined __USE_MISC || defined __USE_XOPEN
@@ -273,6 +324,9 @@ extern long double __REDIRECT_NTH (ynl, (int, long double), __yn_finite);
 #  else
 extern long double __REDIRECT_NTH (ynl, (int, long double), __ynl_finite);
 #  endif
+# endif
+# if __USE_FLOAT128
+extern _Float128 __REDIRECT_NTH (ynf128, (int, _Float128), __ynf128_finite);
 # endif
 #endif
 
@@ -291,6 +345,10 @@ extern long double __REDIRECT_NTH (lgammal_r, (long double, int *),
 #   endif
 #  endif
 # endif
+# if __USE_FLOAT128
+extern _Float128 __REDIRECT_NTH (lgammaf128_r, (_Float128, int *),
+				   __lgammaf128_r_finite);
+# endif
 #endif
 
 extern double __lgamma_r_finite (double, int *);
@@ -300,6 +358,9 @@ extern long double __REDIRECT_NTH (__lgammal_r_finite, (long double, int *),
 				   __lgamma_r_finite);
 #else
 extern long double __lgammal_r_finite (long double, int *);
+#endif
+#if __USE_FLOAT128
+extern _Float128 __lgammaf128_r_finite (_Float128, int *);
 #endif
 
 #if ((defined __USE_XOPEN || defined __USE_ISOC99) \
@@ -333,6 +394,17 @@ __extern_always_inline long double __NTH (lgammal (long double __d))
 # else
   int __local_signgam = 0;
   return __lgammal_r_finite (__d, &__local_signgam);
+# endif
+}
+# endif
+# if __USE_FLOAT128
+__extern_always_inline _Float128 __NTH (lgammaf128 (_Float128 __d))
+{
+# if defined __USE_MISC || defined __USE_XOPEN
+  return __lgammaf128_r_finite (__d, &signgam);
+# else
+  int __local_signgam = 0;
+  return __lgammaf128_r_finite (__d, &__local_signgam);
 # endif
 }
 # endif
@@ -371,6 +443,9 @@ extern long double __REDIRECT_NTH (logl, (long double), __logl_finite);
 #  endif
 # endif
 #endif
+#if __USE_FLOAT128
+extern _Float128 __REDIRECT_NTH (logf128, (_Float128), __logf128_finite);
+#endif
 
 /* log10.  */
 extern double __REDIRECT_NTH (log10, (double), __log10_finite);
@@ -384,6 +459,9 @@ extern long double __REDIRECT_NTH (log10l, (long double), __log10l_finite);
 #  endif
 # endif
 #endif
+#if __USE_FLOAT128
+extern _Float128 __REDIRECT_NTH (log10f128, (_Float128), __log10f128_finite);
+#endif
 
 #ifdef __USE_ISOC99
 /* log2.  */
@@ -396,6 +474,9 @@ extern long double __REDIRECT_NTH (log2l, (long double), __log2_finite);
 extern long double __REDIRECT_NTH (log2l, (long double), __log2l_finite);
 #  endif
 # endif
+#endif
+#if __USE_FLOAT128
+extern _Float128 __REDIRECT_NTH (log2f128, (_Float128), __log2f128_finite);
 #endif
 
 /* pow.  */
@@ -411,6 +492,10 @@ extern long double __REDIRECT_NTH (powl, (long double, long double),
 				   __powl_finite);
 #  endif
 # endif
+#endif
+#if __USE_FLOAT128
+extern _Float128 __REDIRECT_NTH (powf128, (_Float128, _Float128),
+				   __powf128_finite);
 #endif
 
 #if defined __USE_XOPEN_EXTENDED || defined __USE_ISOC99
@@ -428,6 +513,10 @@ extern long double __REDIRECT_NTH (remainderl, (long double, long double),
 				   __remainderl_finite);
 #  endif
 # endif
+#endif
+#if __USE_FLOAT128
+extern _Float128 __REDIRECT_NTH (remainderf128, (_Float128, _Float128),
+				   __remainderf128_finite);
 #endif
 
 #if (defined __USE_MISC							\
@@ -460,6 +549,9 @@ extern long double __REDIRECT_NTH (sinhl, (long double), __sinhl_finite);
 #  endif
 # endif
 #endif
+#if __USE_FLOAT128
+extern _Float128 __REDIRECT_NTH (sinhf128, (_Float128), __sinhf128_finite);
+#endif
 
 /* sqrt.  */
 extern double __REDIRECT_NTH (sqrt, (double), __sqrt_finite);
@@ -472,6 +564,9 @@ extern long double __REDIRECT_NTH (sqrtl, (long double), __sqrt_finite);
 extern long double __REDIRECT_NTH (sqrtl, (long double), __sqrtl_finite);
 #  endif
 # endif
+#endif
+#if __USE_FLOAT128
+extern _Float128 __REDIRECT_NTH (sqrtf128, (_Float128), __sqrtf128_finite);
 #endif
 
 #if defined __USE_ISOC99 && defined __extern_always_inline
@@ -500,6 +595,15 @@ __extern_always_inline long double __NTH (tgammal (long double __d))
 #  else
   long double __res = __gammal_r_finite (__d, &__local_signgam);
 #  endif
+  return __local_signgam < 0 ? -__res : __res;
+}
+# endif
+# if __USE_FLOAT128
+extern _Float128 __gammaf128_r_finite (_Float128, int *);
+__extern_always_inline _Float128 __NTH (tgammaf128 (_Float128 __d))
+{
+  int __local_signgam = 0;
+  _Float128 __res = __gammaf128_r_finite (__d, &__local_signgam);
   return __local_signgam < 0 ? -__res : __res;
 }
 # endif
