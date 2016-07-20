@@ -121,7 +121,9 @@ __MATHCALL (exp10,, (_Mdouble_ __x));
 #endif
 #ifdef __USE_GNU
 /* Another name occasionally used.  */
+# ifndef __FLOATN_TYPE
 __MATHCALL (pow10,, (_Mdouble_ __x));
+# endif
 #endif
 
 #if defined __USE_XOPEN_EXTENDED || defined __USE_ISOC99
@@ -198,14 +200,16 @@ __MATHDECL_1 (int,__finite,, (_Mdouble_ __value)) __attribute__ ((__const__));
 _Mdouble_END_NAMESPACE
 
 #ifdef __USE_MISC
-# if (!defined __cplusplus \
-      || __cplusplus < 201103L /* isinf conflicts with C++11.  */ \
-      || __MATH_DECLARING_DOUBLE == 0) /* isinff or isinfl don't.  */
+# if ((!defined __cplusplus \
+       || __cplusplus < 201103L /* isinf conflicts with C++11.  */ \
+       || __MATH_DECLARING_DOUBLE == 0)) /* isinff or isinfl don't.  */ \
+      && !defined __FLOATN_TYPE
 /* Return 0 if VALUE is finite or NaN, +1 if it
    is +Infinity, -1 if it is -Infinity.  */
 __MATHDECL_1 (int,isinf,, (_Mdouble_ __value)) __attribute__ ((__const__));
 # endif
 
+# ifndef __FLOATN_TYPE
 /* Return nonzero if VALUE is finite and not NaN.  */
 __MATHDECL_1 (int,finite,, (_Mdouble_ __value)) __attribute__ ((__const__));
 
@@ -215,6 +219,8 @@ __MATHCALL (drem,, (_Mdouble_ __x, _Mdouble_ __y));
 
 /* Return the fractional part of X after dividing out `ilogb (X)'.  */
 __MATHCALL (significand,, (_Mdouble_ __x));
+# endif
+
 #endif /* Use misc.  */
 
 #ifdef __USE_ISOC99
@@ -236,9 +242,10 @@ __END_NAMESPACE_C99
 __MATHDECL_1 (int,__isnan,, (_Mdouble_ __value)) __attribute__ ((__const__));
 
 #if defined __USE_MISC || (defined __USE_XOPEN && !defined __USE_XOPEN2K)
-# if (!defined __cplusplus \
-      || __cplusplus < 201103L /* isnan conflicts with C++11.  */ \
-      || __MATH_DECLARING_DOUBLE == 0) /* isnanf or isnanl don't.  */
+# if ((!defined __cplusplus \
+       || __cplusplus < 201103L /* isnan conflicts with C++11.  */ \
+       || __MATH_DECLARING_DOUBLE == 0)) /* isnanf or isnanl don't.  */ \
+      && !defined __FLOATN_TYPE
 /* Return nonzero if VALUE is not a number.  */
 __MATHDECL_1 (int,isnan,, (_Mdouble_ __value)) __attribute__ ((__const__));
 # endif
@@ -272,8 +279,10 @@ __END_NAMESPACE_C99
 #endif
 
 #if defined __USE_MISC || (defined __USE_XOPEN && !defined __USE_XOPEN2K)
+# ifndef __FLOATN_TYPE
 /* Obsolete alias for `lgamma'.  */
 __MATHCALL (gamma,, (_Mdouble_));
+# endif
 #endif
 
 #ifdef __USE_MISC
@@ -292,7 +301,7 @@ __MATHCALL (rint,, (_Mdouble_ __x));
 
 /* Return X + epsilon if X < Y, X - epsilon if X > Y.  */
 __MATHCALLX (nextafter,, (_Mdouble_ __x, _Mdouble_ __y), (__const__));
-# if defined __USE_ISOC99 && !defined __LDBL_COMPAT
+# if defined __USE_ISOC99 && !defined __LDBL_COMPAT && !defined __FLOATN_TYPE
 __MATHCALLX (nexttoward,, (_Mdouble_ __x, long double __y), (__const__));
 # endif
 
@@ -413,9 +422,10 @@ __MATHDECL_1 (int, setpayload,, (_Mdouble_ *__x, _Mdouble_ __payload));
 __MATHDECL_1 (int, setpayloadsig,, (_Mdouble_ *__x, _Mdouble_ __payload));
 #endif
 
-#if defined __USE_MISC || (defined __USE_XOPEN_EXTENDED \
-			   && __MATH_DECLARING_DOUBLE	\
-			   && !defined __USE_XOPEN2K8)
+#if (defined __USE_MISC || (defined __USE_XOPEN_EXTENDED \
+			    && __MATH_DECLARING_DOUBLE	  \
+			    && !defined __USE_XOPEN2K8))  \
+     && !defined __FLOATN_TYPE
 /* Return X times (2 to the Nth power).  */
 __MATHCALL (scalb,, (_Mdouble_ __x, _Mdouble_ __n));
 #endif
