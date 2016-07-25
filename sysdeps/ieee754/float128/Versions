@@ -5,6 +5,16 @@
 libc {
   FLOAT128_VERSION {
     strfromf128;
+    strtof128;
+    strtof128_l;
+    __strtof128_internal;
+    wcstof128;
+    wcstof128_l;
+    __wcstof128_internal;
+  }
+  GLIBC_PRIVATE {
+    # For __nanf128.
+    __strtof128_nan;
   }
 }
 libm {

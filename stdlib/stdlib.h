@@ -54,6 +54,9 @@ __BEGIN_DECLS
 # endif
 #endif	/* X/Open or XPG7 and <sys/wait.h> not included.  */
 
+/* _FloatN API tests for enablement.  */
+#include <bits/floatn.h>
+
 __BEGIN_NAMESPACE_STD
 /* Returned by `div'.  */
 typedef struct
@@ -138,6 +141,15 @@ extern long double strtold (const char *__restrict __nptr,
 			    char **__restrict __endptr)
      __THROW __nonnull ((1));
 __END_NAMESPACE_C99
+#endif
+
+#if __USE_FLOAT128
+__BEGIN_NAMESPACE_STD
+/* Likewise for the '_Float128' format  */
+extern _Float128 strtof128 (const char *__restrict __nptr,
+		      char **__restrict __endptr)
+     __THROW __nonnull ((1));
+__END_NAMESPACE_STD
 #endif
 
 __BEGIN_NAMESPACE_STD
@@ -251,6 +263,14 @@ extern long double strtold_l (const char *__restrict __nptr,
 			      char **__restrict __endptr,
 			      __locale_t __loc)
      __THROW __nonnull ((1, 3));
+
+#if __USE_FLOAT128
+extern _Float128 strtof128_l (const char *__restrict __nptr,
+			      char **__restrict __endptr,
+			      __locale_t __loc)
+     __THROW __nonnull ((1, 3));
+#endif
+
 #endif /* GNU */
 
 

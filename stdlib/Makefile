@@ -190,6 +190,7 @@ $(objpfx)tst-putenvmod.so: $(objpfx)tst-putenvmod.os $(link-libc-deps)
 libof-tst-putenvmod = extramodules
 
 $(objpfx)bug-getcontext: $(libm)
+$(objpfx)bug-strtod2: $(libm)
 $(objpfx)tst-strtod-round: $(libm)
 $(objpfx)tst-tininess: $(libm)
 $(objpfx)tst-strtod-underflow: $(libm)

@@ -87,6 +87,10 @@ Version 2.25
 * The function strfromf128, from ISO/IEC TS 18661-3:2014, is added to libc.  It
   converts a _Float128 value into string.
 
+* The functions strtof128, from ISO/IEC TS 18661-3:2014, is added to libc.  It
+  converts a string into a floating-point number of _Float128 type.  Its wide
+  character counterpart, wsctof128, is added as a GNU extension.
+
 * On ColdFire, MicroBlaze, Nios II and SH3, the float_t type is now defined
   to float instead of double.  This does not affect the ABI of any libraries
   that are part of the GNU C Library, but may affect the ABI of other
