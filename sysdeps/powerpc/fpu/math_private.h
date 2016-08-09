@@ -23,7 +23,18 @@
 #include <ldsodefs.h>
 #include <dl-procinfo.h>
 #include <fenv_private.h>
+
 #include_next <math_private.h>
+
+#ifdef _ARCH_PWR9
+extern __always_inline __float128
+__ieee754_sqrtf128 (__float128 __x)
+{
+  __float128 __z;
+  asm ("xssqrtqp %0,%1" : "=wq" (__z) : "wq" (__x));
+  return __z;
+}
+#endif
 
 extern double __slow_ieee754_sqrt (double);
 extern __always_inline double
