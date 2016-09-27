@@ -355,6 +355,29 @@ static FLOAT max_valid_error;
 #define TYPE_DECIMAL_DIG __CONCATX (PREFIX, _DECIMAL_DIG)
 #define TYPE_HEX_DIG ((MANT_DIG + 6) / 4)
 
+/* The definitions TYPE_DECIMAL_DIG and TYPE_HEX_DIG are used to select the
+   precision (i.e.: number of fractional digits) to be printed.  When using
+   snprintf, it is possible to pass the precision in an argument with "%.*".
+   On the other hand, strfrom does not accept such format string, thus the
+   precision must be coded in the format string itself.  */
+static int
+v_ftostr (char *dest, size_t size, const char *format, const char *conversion,
+	  int precision, FLOAT value)
+{
+  char new_format[64];
+  char *ptr_format;
+  int ret;
+
+  /* Generate the format string.  */
+  ptr_format = stpcpy(new_format, format);
+  ret = sprintf(ptr_format, "%d", precision);
+  ptr_format += ret;
+  ptr_format = stpcpy(ptr_format, conversion);
+
+  /* Call the float to string conversion function, e.g.: strfromd.  */
+  return FTOSTR(dest, size, new_format, value);
+}
+
 /* Compare KEY (a string, with the name of a function) with ULP (a
    pointer to a struct ulp_data structure), returning a value less
    than, equal to or greater than zero for use in bsearch.  */
@@ -437,8 +460,8 @@ print_float (FLOAT f)
   else
     {
       char fstrn[FSTR_MAX], fstrx[FSTR_MAX];
-      FTOSTR (fstrn, FSTR_MAX, "% .*" PRINTF_EXPR, TYPE_DECIMAL_DIG - 1, f);
-      FTOSTR (fstrx, FSTR_MAX, "% .*" PRINTF_XEXPR, TYPE_HEX_DIG - 1, f);
+      v_ftostr (fstrn, FSTR_MAX, "%.", PRINTF_EXPR, TYPE_DECIMAL_DIG - 1, f);
+      v_ftostr (fstrx, FSTR_MAX, "%.", PRINTF_XEXPR, TYPE_HEX_DIG - 1, f);
       printf ("%s  %s\n", fstrn, fstrx);
     }
 }
@@ -884,12 +907,12 @@ check_float_internal (const char *test_name, FLOAT computed, FLOAT expected,
 	{
 	  char dstrn[FSTR_MAX], dstrx[FSTR_MAX];
 	  char ustrn[FSTR_MAX], mustrn[FSTR_MAX];
-	  FTOSTR (dstrn, FSTR_MAX, "% .*" PRINTF_EXPR,
-		  TYPE_DECIMAL_DIG - 1, diff);
-	  FTOSTR (dstrx, FSTR_MAX, "% .*" PRINTF_XEXPR,
-		  TYPE_HEX_DIG - 1, diff);
-	  FTOSTR (ustrn, FSTR_MAX, "% .4" PRINTF_NEXPR, ulps);
-	  FTOSTR (mustrn, FSTR_MAX, "% .4" PRINTF_NEXPR, max_ulp);
+	  v_ftostr (dstrn, FSTR_MAX, "%.", PRINTF_EXPR,
+		    TYPE_DECIMAL_DIG - 1, diff);
+	  v_ftostr (dstrx, FSTR_MAX, "%.", PRINTF_XEXPR,
+		    TYPE_HEX_DIG - 1, diff);
+	  FTOSTR (ustrn, FSTR_MAX, "%.4" PRINTF_NEXPR, ulps);
+	  FTOSTR (mustrn, FSTR_MAX, "%.4" PRINTF_NEXPR, max_ulp);
 	  printf (" difference: %s  %s\n", dstrn, dstrx);
 	  printf (" ulp       : %s\n", ustrn);
 	  printf (" max.ulp   : %s\n", mustrn);

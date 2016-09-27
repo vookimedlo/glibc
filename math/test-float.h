@@ -27,5 +27,5 @@
 #define LIT(x) (x ## f)
 /* Use the double variants of macro constants.  */
 #define LITM(x) x
-#define FTOSTR snprintf
+#define FTOSTR strfromf
 #define snan_value_MACRO SNANF

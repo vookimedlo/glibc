@@ -26,5 +26,5 @@
 #define LIT(x) (x)
 #define TYPE_STR "double"
 #define LITM(x) x
-#define FTOSTR snprintf
+#define FTOSTR strfromd
 #define snan_value_MACRO SNAN
