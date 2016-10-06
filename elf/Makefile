@@ -36,8 +36,10 @@ ifeq (yes,$(use-ldconfig))
 dl-routines += dl-cache
 endif
 
-ifeq (yes,$(have-tunables))
+ifneq (no,$(have-tunables))
 dl-routines += dl-tunables
+tunables-type = $(addprefix TUNABLES_FRONTEND_,$(have-tunables))
+CPPFLAGS-dl-tunables.c = -DTUNABLES_FRONTEND=$(tunables-type)
 endif
 
 all-dl-routines = $(dl-routines) $(sysdep-dl-routines)
