@@ -18,10 +18,24 @@
 #include "gmp.h"
 #include "gmp-impl.h"
 #include "longlong.h"
-#include <ieee754.h>
-#include <float.h>
-#include <math.h>
-#include <stdlib.h>
+
+#if __FLOAT128_OVERRIDE == 1
+# include <float.h>
+# include <math.h>
+# include <ieee754_float128.h>
+# undef ieee854_long_double 
+# define ieee854_long_double ieee854_float128
+# undef IEEE854_LONG_DOUBLE_BIAS
+# define IEEE854_LONG_DOUBLE_BIAS IEEE854_FLOAT128_BIAS
+# undef LDBL_MANT_DIG
+# undef LDBL_MIN_EXP
+# define LDBL_MANT_DIG FLT128_MANT_DIG
+# define LDBL_MIN_EXP FLT128_MIN_EXP
+#else
+# include <ieee754.h>
+# include <float.h>
+# include <math.h>
+#endif
 
 /* Convert a `long double' in IEEE854 quad-precision format to a
    multi-precision integer representing the significand scaled up by its
@@ -29,9 +43,15 @@
    (MPN frexpl). */
 
 mp_size_t
+#if __FLOAT128_OVERRIDE == 1
+__mpn_extract_float128 (mp_ptr res_ptr, mp_size_t size,
+			int *expt, int *is_neg,
+			__float128 value)
+#else
 __mpn_extract_long_double (mp_ptr res_ptr, mp_size_t size,
 			   int *expt, int *is_neg,
 			   long double value)
+#endif
 {
   union ieee854_long_double u;
   u.d = value;
