@@ -132,6 +132,12 @@ STRFROM (char *dest, size_t size, const char *format, FLOAT f)
      which type of floating-point number is being passed.  */
   info.is_long_double = __builtin_types_compatible_p (FLOAT, long double);
 
+  /* Similarly, the function strfromf128 passes a floating-point number in
+     __float128 format to printf_fp.  */
+#if __USE_FLOAT128
+  info.is___float128 = __builtin_types_compatible_p (FLOAT, __float128);
+#endif
+
   /* Set info according to the format string.  */
   info.prec = precision;
   info.spec = specifier;

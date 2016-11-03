@@ -766,7 +766,8 @@ static const uint8_t jump_table[] =
 					.pad = pad,			      \
 					.extra = 0,			      \
 					.i18n = use_outdigits,		      \
-					.wide = sizeof (CHAR_T) != 1 };	      \
+					.wide = sizeof (CHAR_T) != 1,	      \
+					.is___float128 = 0};		      \
 									      \
 	    if (is_long_double)						      \
 	      the_arg.pa_long_double = va_arg (ap, long double);	      \
@@ -784,6 +785,9 @@ static const uint8_t jump_table[] =
 		fspec->data_arg_type = PA_DOUBLE;			      \
 		fspec->info.is_long_double = 0;				      \
 	      }								      \
+	    /* XXX: Is this really required or should the calling function    \
+		    had already set it to zero?  */			      \
+	    fspec->info.is___float128 = 0;				      \
 									      \
 	    function_done = __printf_fp (s, &fspec->info, &ptr);	      \
 	  }								      \
@@ -823,7 +827,8 @@ static const uint8_t jump_table[] =
 					.group = group,			      \
 					.pad = pad,			      \
 					.extra = 0,			      \
-					.wide = sizeof (CHAR_T) != 1 };	      \
+					.wide = sizeof (CHAR_T) != 1,	      \
+					.is___float128 = 0};		      \
 									      \
 	    if (is_long_double)						      \
 	      the_arg.pa_long_double = va_arg (ap, long double);	      \
@@ -838,6 +843,9 @@ static const uint8_t jump_table[] =
 	    ptr = (const void *) &args_value[fspec->data_arg];		      \
 	    if (__ldbl_is_dbl)						      \
 	      fspec->info.is_long_double = 0;				      \
+	    /* XXX: Is this really required or should the calling function    \
+		    had already set it to zero?  */			      \
+	    fspec->info.is___float128 = 0;				      \
 									      \
 	    function_done = __printf_fphex (s, &fspec->info, &ptr);	      \
 	  }								      \

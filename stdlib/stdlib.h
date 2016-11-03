@@ -192,6 +192,11 @@ extern int strfromf (char *__dest, size_t __size, const char *__format,
 extern int strfroml (char *__dest, size_t __size, const char *__format,
 		     long double __f)
      __THROW __nonnull ((3));
+# if __USE_FLOAT128
+extern int strfromf128 (char *__dest, size_t __size, const char * __format,
+			__float128 __f)
+     __THROW __nonnull ((3));
+# endif
 #endif
 
 

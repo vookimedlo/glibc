@@ -40,6 +40,10 @@
 #define DBL_MAX_10_EXP_LOG	8 /* = floor(log_2(DBL_MAX_10_EXP)) */
 #define FLT_MAX_10_EXP_LOG	5 /* = floor(log_2(FLT_MAX_10_EXP)) */
 
+#if __HAVE_FLOAT128
+# define FLT128_MAX_10_EXP_LOG	12 /* = floor(log_2(FLT128_MAX_10_EXP)) */
+#endif
+
 /* On some machines, _Float128 may be a distinct, and more expressive
    type than long double (i.e the ibm128 format).  */
 #include <bits/floatn.h>

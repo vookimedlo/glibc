@@ -218,6 +218,9 @@ __printf_fp_l (FILE *fp, locale_t loc,
     {
       double dbl;
       __long_double_t ldbl;
+#if __USE_FLOAT128
+      __float128 f128;
+#endif
     }
   fpnum;
 
@@ -328,6 +331,55 @@ __printf_fp_l (FILE *fp, locale_t loc,
     grouping = NULL;
 
   /* Fetch the argument value.	*/
+#if __USE_FLOAT128
+# if ! __HAVE_FLOAT128
+#  error "Runtime support for __float128 not available"
+# endif
+  if (info->is___float128)
+    {
+      fpnum.f128 = *(const __float128 *) args[0];
+
+      /* Check for special values: not a number or infinity.  */
+      if (isnan (fpnum.f128))
+	{
+	  is_neg = __signbitf128 (fpnum.f128);
+	  if (isupper (info->spec))
+	    {
+	      special = "NAN";
+	      wspecial = L"NAN";
+	    }
+	    else
+	      {
+		special = "nan";
+		wspecial = L"nan";
+	      }
+	}
+      else if (isinf (fpnum.f128))
+	{
+	  is_neg = __signbitf128 (fpnum.f128);
+	  if (isupper (info->spec))
+	    {
+	      special = "INF";
+	      wspecial = L"INF";
+	    }
+	  else
+	    {
+	      special = "inf";
+	      wspecial = L"inf";
+	    }
+	}
+      else
+	{
+	  p.fracsize = __mpn_extract_float128 (fp_input,
+					       (sizeof (fp_input) /
+						sizeof (fp_input[0])),
+					       &p.exponent, &is_neg,
+					       fpnum.f128);
+	  to_shift = 1 + p.fracsize * BITS_PER_MP_LIMB - FLT128_MANT_DIG;
+	}
+    }
+  else
+#endif /* USE_FLOAT128 */
 #ifndef __NO_LONG_DOUBLE_MATH
   if (info->is_long_double && sizeof (long double) > sizeof (double))
     {
@@ -499,6 +551,27 @@ __printf_fp_l (FILE *fp, locale_t loc,
 	    {
 	      if (p.scalesize == 0)
 		{
+#if __HAVE_FLOAT128
+		  if ((FLT128_MANT_DIG
+			    > _FPIO_CONST_OFFSET * BITS_PER_MP_LIMB)
+			   && info->is___float128)
+		    {
+#define _FLT128_FPIO_CONST_SHIFT \
+  (((FLT128_MANT_DIG + BITS_PER_MP_LIMB - 1) / BITS_PER_MP_LIMB) \
+   - _FPIO_CONST_OFFSET)
+		      /* 64bit const offset is not enough for
+			 IEEE 854 quad long double (__float128).  */
+		      p.tmpsize = powers->arraysize + _FLT128_FPIO_CONST_SHIFT;
+		      memcpy (p.tmp + _FLT128_FPIO_CONST_SHIFT,
+			      &__tens[powers->arrayoff],
+			      p.tmpsize * sizeof (mp_limb_t));
+		      MPN_ZERO (p.tmp, _FLT128_FPIO_CONST_SHIFT);
+		      /* Adjust p.exponent, as scaleexpo will be this much
+			 bigger too.  */
+		      p.exponent += _FLT128_FPIO_CONST_SHIFT * BITS_PER_MP_LIMB;
+		    }
+		  else
+#endif /* HAVE_FLOAT128 */
 #ifndef __NO_LONG_DOUBLE_MATH
 		  if (LDBL_MANT_DIG > _FPIO_CONST_OFFSET * BITS_PER_MP_LIMB
 		      && info->is_long_double)
