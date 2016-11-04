@@ -40,9 +40,14 @@
 #define DBL_MAX_10_EXP_LOG	8 /* = floor(log_2(DBL_MAX_10_EXP)) */
 #define FLT_MAX_10_EXP_LOG	5 /* = floor(log_2(FLT_MAX_10_EXP)) */
 
+/* On some machines, _Float128 may be a distinct, and more expressive
+   type than long double (i.e the ibm128 format).  */
+#include <bits/floatn.h>
+
 /* For strtold, we need powers of 10 up to floor (log_2 (LDBL_MANT_DIG
    - LDBL_MIN_EXP + 2)).  */
-#if !defined __NO_LONG_DOUBLE_MATH && __LDBL_MAX_EXP__ > 1024
+#if (!defined __NO_LONG_DOUBLE_MATH && __LDBL_MAX_EXP__ > 1024) \
+    || __HAVE_FLOAT128
 # define FPIOCONST_POW10_ARRAY_SIZE	15
 #else
 # define FPIOCONST_POW10_ARRAY_SIZE	11

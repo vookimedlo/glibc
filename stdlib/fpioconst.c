@@ -27,6 +27,9 @@
    with gen-fpioconst.c.
  */
 
+#define HAVE_EXTENDED_RANGE ((!defined __NO_LONG_DOUBLE_MATH \
+  && __LDBL_MAX_EXP__ > 1024) || __HAVE_FLOAT128)
+
 #if BITS_PER_MP_LIMB == 32
 
 /* Table with constants of 10^(2^i), i=0..12 for 32-bit limbs.	*/
@@ -112,7 +115,7 @@ const mp_limb_t __tens[] =
   0xd2db49ef, 0x926c3f5b, 0xae6209d4, 0x2d433949, 0x34f4a3c6, 0xd4305d94,
   0xd9d61a05, 0x00000325,
 
-#if !defined __NO_LONG_DOUBLE_MATH && __LDBL_MAX_EXP__ > 1024
+#if HAVE_EXTENDED_RANGE
 # define TENS_P11_IDX	(TENS_P10_IDX + TENS_P10_SIZE)
 # define TENS_P11_SIZE	215
   [TENS_P11_IDX] = 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
@@ -748,7 +751,7 @@ const mp_limb_t __tens[] =
   0xd2db49ef47187094ull, 0xae6209d4926c3f5bull, 0x34f4a3c62d433949ull,
   0xd9d61a05d4305d94ull, 0x0000000000000325ull,
 
-#if !defined __NO_LONG_DOUBLE_MATH && __LDBL_MAX_EXP__ > 1024
+#if HAVE_EXTENDED_RANGE
 # define TENS_P11_IDX	(TENS_P10_IDX + TENS_P10_SIZE)
 # define TENS_P11_SIZE	108
   [TENS_P11_IDX] = 0x0000000000000000ull, 0x0000000000000000ull,
@@ -1320,7 +1323,7 @@ const struct mp_power _fpioconst_pow10[FPIOCONST_POW10_ARRAY_SIZE] =
   { TENS_P8_IDX, TENS_P8_SIZE,  	851,	 848 },
   { TENS_P9_IDX, TENS_P9_SIZE,	 	1701,	1698 },
   { TENS_P10_IDX, TENS_P10_SIZE,	3402,	3399 },
-#if !defined __NO_LONG_DOUBLE_MATH && __LDBL_MAX_EXP__ > 1024
+#if HAVE_EXTENDED_RANGE
   { TENS_P11_IDX, TENS_P11_SIZE,	6804,	6800 },
   { TENS_P12_IDX, TENS_P12_SIZE,	13607,	13604 },
   { TENS_P13_IDX, TENS_P13_SIZE,	27214,	27210 },
