@@ -60,6 +60,9 @@ __BEGIN_DECLS
 #  define SNAN (__builtin_nans (""))
 #  define SNANL (__builtin_nansl (""))
 # endif
+# if __GNUC_PREREQ (6, 0) && __USE_FLOAT128
+#  define SNANF128 ((__float128) __builtin_nansq (""))
+# endif
 #endif
 
 /* Get __GLIBC_FLT_EVAL_METHOD.  */

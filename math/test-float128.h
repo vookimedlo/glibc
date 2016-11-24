@@ -26,6 +26,7 @@
 #define TYPE_STR "float128"
 #define LITM(x) x ## f128
 #define FTOSTR strfromf128
+#define snan_value_MACRO SNANF128
 
 /* Fixup builtins and constants for older compilers.  */
 #include <features.h>
