@@ -26,6 +26,7 @@ libm {
     atan2f128;
     atanf128;
     atanhf128;
+    canonicalizef128;
     copysignf128;
     cosf128;
     coshf128;
