@@ -272,6 +272,7 @@ typedef __float128 _Float128;
 #define fpclassifyl fpclassifyf128
 #define frexpl frexpf128
 #define gammal_r_finite gammaf128_r_finite
+#define getpayloadl getpayloadf128
 #define isinfl isinff128
 #define isnanl isnanf128
 #define issignalingl issignalingf128
