@@ -536,6 +536,10 @@ extern long double __lgamma_productl (long double t, long double x,
 # define __EXPR_FLT128(x, yes, no) no
 #endif
 
+/* Before GCC 7.0, __builtin_fabsf128 does not exist.  */
+#if ! __GNUC_PREREQ (7, 0)
+# define __builtin_fabsf128 __builtin_fabsq
+#endif
 
 #define fabs_tg(x) __MATH_TG ((x), (__typeof (x)) __builtin_fabs, (x))
 
