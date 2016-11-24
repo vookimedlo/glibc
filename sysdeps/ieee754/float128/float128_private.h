@@ -299,6 +299,8 @@ typedef __float128 _Float128;
 #define sqrtl sqrtf128
 #define tanhl tanhf128
 #define tanl tanf128
+#define totalorderl totalorderf128
+#define totalordermagl totalordermagf128
 #define truncl truncf128
 
 
