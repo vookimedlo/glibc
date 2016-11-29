@@ -397,7 +397,7 @@ enum
 # endif
 
 /* Return nonzero value if sign of X is negative.  */
-# if __GNUC_PREREQ (4,0)
+# if __GNUC_PREREQ (4,0) && !__USE_FLOAT128
 #  define signbit(x) __MATH_TG ((x), __builtin_signbit, (x))
 # else
 #  define signbit(x) __MATH_TG ((x), __signbit, (x))
