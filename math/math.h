@@ -451,7 +451,11 @@ enum
 #endif /* Use ISO C99.  */
 
 #if __GLIBC_USE (IEC_60559_BFP_EXT)
-# include <bits/iscanonical.h>
+# if __USE_FLOAT128
+#  include <bits/iscanonicalf128.h>
+# else
+#  include <bits/iscanonical.h>
+# endif
 
 /* Return nonzero value if X is a signaling NaN.  */
 # define issignaling(x) __MATH_TG ((x), __issignaling, (x))
