@@ -48,6 +48,7 @@ libm {
     ilogbf128;
     ldexpf128;
     lgammaf128;
+    llogbf128;
     llrintf128;
     llroundf128;
     log10f128;
