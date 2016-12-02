@@ -70,6 +70,7 @@ libm {
     roundf128;
     scalblnf128;
     scalbnf128;
+    setpayloadf128;
     sinf128;
     sinhf128;
     sqrtf128;
