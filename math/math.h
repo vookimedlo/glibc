@@ -324,6 +324,30 @@ extern int signgam;
 #ifdef __NO_LONG_DOUBLE_MATH
 # define __MATH_TG(TG_ARG, FUNC, ARGS)					\
   (sizeof (TG_ARG) == sizeof (float) ? FUNC ## f ARGS : FUNC ARGS)
+#elif __USE_FLOAT128
+# if __USE_ISOC11 /* if defined __STDC_VERSION__ && __GNUC_PREREQ (4, 9) */
+#  define __MATH_TG(TG_ARG, FUNC, ARGS)	\
+     _Generic ((TG_ARG),		\
+       _Float128: FUNC ## f128 ARGS,	\
+       long double: FUNC ## l ARGS,	\
+       float: FUNC ## f ARGS,		\
+       default: FUNC ARGS)
+# else
+#  if ! __GNUC__
+#   error "Building __float128 support requires GCC or C11 support."
+#  endif
+#  define __MATH_TG(TG_ARG, FUNC, ARGS)					\
+     __builtin_choose_expr						\
+     (__builtin_types_compatible_p (__typeof (TG_ARG), __float128),	\
+      FUNC ## f128 ARGS,						\
+      __builtin_choose_expr						\
+      (__builtin_types_compatible_p (__typeof (TG_ARG), float),		\
+       FUNC ## f ARGS,							\
+       __builtin_choose_expr						\
+       (__builtin_types_compatible_p (__typeof (TG_ARG), long double),	\
+	FUNC ## l ARGS,							\
+	FUNC ARGS)))
+# endif
 #else
 # define __MATH_TG(TG_ARG, FUNC, ARGS)		\
   (sizeof (TG_ARG) == sizeof (float)		\
