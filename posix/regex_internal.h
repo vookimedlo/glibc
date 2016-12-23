@@ -381,6 +381,7 @@ typedef struct re_dfa_t re_dfa_t;
 # endif
 #endif
 
+#if 0
 #if IS_IN (libc)
 static reg_errcode_t re_string_realloc_buffers (re_string_t *pstr,
 						int new_buf_len)
@@ -396,6 +397,8 @@ static unsigned int re_string_context_at (const re_string_t *input, int idx,
 					  int eflags)
      internal_function __attribute__ ((pure));
 #endif
+#endif
+
 #define re_string_peek_byte(pstr, offset) \
   ((pstr)->mbs[(pstr)->cur_idx + offset])
 #define re_string_fetch_byte(pstr) \
@@ -413,7 +416,9 @@ static unsigned int re_string_context_at (const re_string_t *input, int idx,
 #define re_string_skip_bytes(pstr,idx) ((pstr)->cur_idx += (idx))
 #define re_string_set_index(pstr,idx) ((pstr)->cur_idx = (idx))
 
+#ifndef _WINDOWS
 #include <alloca.h>
+#endif
 
 #ifndef _LIBC
 # if HAVE_ALLOCA

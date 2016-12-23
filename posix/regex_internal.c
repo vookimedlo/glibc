@@ -17,6 +17,23 @@
    License along with the GNU C Library; if not, see
    <http://www.gnu.org/licenses/>.  */
 
+
+static reg_errcode_t re_string_realloc_buffers(re_string_t *pstr,
+    int new_buf_len)
+    internal_function;
+# ifdef RE_ENABLE_I18N
+static void build_wcs_buffer(re_string_t *pstr) internal_function;
+static reg_errcode_t build_wcs_upper_buffer(re_string_t *pstr)
+internal_function;
+# endif /* RE_ENABLE_I18N */
+static void build_upper_buffer(re_string_t *pstr) internal_function;
+static void re_string_translate_buffer(re_string_t *pstr) internal_function;
+static unsigned int re_string_context_at(const re_string_t *input, int idx,
+    int eflags)
+    internal_function __attribute__((pure));
+
+
+
 static void re_string_construct_common (const char *str, int len,
 					re_string_t *pstr,
 					RE_TRANSLATE_TYPE trans, int icase,

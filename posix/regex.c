@@ -57,9 +57,11 @@
 #include <limits.h>
 
 /* This header defines the MIN and MAX macros.  */
+#ifndef _WINDOWS
 #include <sys/param.h>
+#endif
 
-#include <regex.h>
+#include "regex.h"
 #include "regex_internal.h"
 
 #include "regex_internal.c"
