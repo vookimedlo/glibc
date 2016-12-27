@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{1A790D2F-D3FB-491A-9AA5-9B00B6D15DA9}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>Win32Project2</RootNamespace>
+    <RootNamespace>libregex2</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
     <ProjectName>libregex2</ProjectName>
   </PropertyGroup>
